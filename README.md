@@ -132,14 +132,22 @@ Videos are located in the folder `videos`. Here I show the gifs:
 
 There are 2 ways to use the docker of the project:
 
-1) One can run the ready docker image from my dockerhub: run the command `docker run -p 8501:8501 omurkanov/fast-style-transfer` and then open in browswer by address `http://localhost:8501`
+1) One can run the ready docker image from my dockerhub:
 
-2) One can build the docker image locally. For this one should clone the repo:
-```git clone https://github.com/turgunbek/fast_style_transfer_GAN.git
-cd fast_style_transfer_GAN```
-Then build the image: `docker build -t fast-style-transfer .`
-Then run the container: `docker run -p 8501:8501 fast-style-transfer`
-Then open it in the browser: `http://localhost:8501`
+* Run the command `docker run -p 8501:8501 omurkanov/fast-style-transfer`
+* and then open in browswer by address `http://localhost:8501`
+
+2) One can build the docker image locally. For this follow the steps:
+
+* Clone the repo: `git clone https://github.com/turgunbek/fast_style_transfer_GAN.git`
+
+* Make sure you're in the proper directory: `cd fast_style_transfer_GAN`
+
+* Then build the image: `docker build -t fast-style-transfer .`
+
+* Then run the container: `docker run -p 8501:8501 fast-style-transfer`
+
+* Then open it in the browser: `http://localhost:8501`
 
 
 # Reports (Отчёт для разбалловки)

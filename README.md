@@ -116,6 +116,15 @@ Videos are located in the folder `videos`. Here I show the gifs:
 
 <hr>
 
+# Reports (Отчёт для разбалловки)
 
-
+* Есть работающий инференс (можно увидеть в reports\demo.mp4 или на сервере https://faststyletransfergan.streamlit.app/ или запустить самому: склонировать репозиторий, далее в терминале набрать `streamlit run app.py`).
+* Есть работающее приложение на сервере по адресу: https://faststyletransfergan.streamlit.app/.
+* Запись демо - файл `demo.mp4` находится в папке `reports`.
+* Адекватный результат на тестовых данных - взял первые 2 фотки из тестовых (images\content_images\photo_1.jpg и images\content_images\photo_2.jpg) и для них сделал стилизиацию со всеми 4мя стилями, результаты находятся в папке images\generated_images\: stylized_photo_1_starry_night.jpg, stylized_photo_2_starry_night.jpg, ..., stylized_photo_1_mosaic.jpg, stylized_photo_2_mosaic.jpg, а также для других картинок есть результаты стилизаций.
+* Описание репозитория довольно понятное, функции с докстрингами, ассертами и т.д.
+* Линтеры - прогнал через flake8 - всё ок (скриншот виден в reports\linters_and_tests.png).
+* Тесты - составил в папке tests тесты на некоторые функции, прогнал тесты - всё ок (скриншот виден в reports\linters_and_tests.png).
+* Дополнительная фича - возможность стилизовать видео. Сделал в интерфейсе streamlit возможность выбора видео. На демо в конце видно, что работает с видео. Результаты находятся в папке videos.
+* Докер-контейнер - todo
 

@@ -102,7 +102,19 @@ The file `utils.py` contains functions and classes required for stylization and 
 
 # Video
 
+Videos are located in the folder `videos`. Here I show the gifs:
 
+<p align="center">
+  <img src="gifs/flag_kg_winter.gif" width="800">
+</p>
+<p align="center">
+  <img src="gifs/flag_kg_winter_starry_night.gif" height="150">
+  <img src="gifs/flag_kg_winter_rain.gif" height="150">
+  <img src="gifs/flag_kg_winter_abstract.gif" height="150">
+  <img src="gifs/flag_kg_winter_mosaic.gif" height="150">
+</p>
+
+<hr>
 
 
 

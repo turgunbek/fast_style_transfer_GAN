@@ -37,7 +37,7 @@ class VGG16Loss(nn.Module):
 
         # load stuff to device
         self.MEAN = self.MEAN.to(device)
-        self.STD = self.STD.to(device)b
+        self.STD = self.STD.to(device)
         style_img = style_img.to(device)
 
         self.content_losses = []

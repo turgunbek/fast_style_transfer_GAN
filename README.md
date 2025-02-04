@@ -41,6 +41,8 @@ The file `utils.py` contains functions and classes required for stylization and 
 
 # Styles
 
+The 4 images were taken as the style-patterns:
+
 <p align="center">
   <img src="images/style_images/starry-night.jpg" height="150">
   <img src="images/style_images/rain-princess.jpg" height="150">
@@ -51,6 +53,8 @@ The file `utils.py` contains functions and classes required for stylization and 
 
 
 # Results
+
+Here are some results of style-transfering. Each block has the original (content) image in the 1st row and its stylized generated ones in the 2nd row below it.
 
 <p align="center">
   <img src="images/content_images/bahla-fort.jpg" height="150">

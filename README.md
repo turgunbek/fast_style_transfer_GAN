@@ -27,4 +27,83 @@ The file `train_model.py` is to be launched through command line with arguments.
 
 The file `utils.py` contains functions and classes required for stylization and model training.
 
+# Styles
+
+<p align="center">
+  <img src="images/style_images/starry-night.jpg" height="150">
+  <img src="images/style_images/rain-princess.jpg" height="150">
+  <img src="images/style_images/abstract-dalle.png" height="150">
+  <img src="images/style_images/mosaic.jpg" height="150">
+</p>
+
+
+
+# Results
+
+<p align="center">
+  <img src="images/content_images/bahla-fort.jpg" height="150">
+</p>
+<p align="center">
+  <img src="images/generated_images/bahla-fort-starry-night.png" height="150">
+  <img src="images/generated_images/bahla-fort-rain-princess.png" height="150">
+  <img src="images/generated_images/bahla-fort-abstract.png" height="150">
+  <img src="images/generated_images/bahla-fort-mosaic.png" height="150">
+</p>
+
+<hr>
+
+<p align="center">
+  <img src="images/content_images/fruits.jpg" height="150">
+</p>
+<p align="center">
+  <img src="images/generated_images/fruits-starry-night.png" height="150">
+  <img src="images/generated_images/fruits-rain-princess.png" height="150">
+  <img src="images/generated_images/fruits-abstract.png" height="150">
+  <img src="images/generated_images/fruits-mosaic.png" height="150">
+</p>
+
+<hr>
+
+<p align="center">
+  <img src="images/content_images/three_girls.jpg" height="150">
+</p>
+<p align="center">
+  <img src="images/generated_images/three_girls_starry_night.jpg" height="150">
+  <img src="images/generated_images/three_girls_rain.jpg" height="150">
+  <img src="images/generated_images/three_girls_abstract.jpg" height="150">
+  <img src="images/generated_images/three_girls_mozaic.jpg" height="150">
+</p>
+
+<hr>
+
+<p align="center">
+  <img src="images/content_images/photo_1.jpg" height="150">
+</p>
+<p align="center">
+  <img src="images/generated_images/stylized_photo_1_starry_night.jpg" height="150">
+  <img src="images/generated_images/stylized_photo_1_rain.jpg" height="150">
+  <img src="images/generated_images/stylized_photo_1_abstract.jpg" height="150">
+  <img src="images/generated_images/stylized_photo_1_mosaic.jpg" height="150">
+</p>
+
+<hr>
+
+<p align="center">
+  <img src="images/content_images/photo_2.jpg" height="150">
+</p>
+<p align="center">
+  <img src="images/generated_images/stylized_photo_2_starry_night.jpg" height="150">
+  <img src="images/generated_images/stylized_photo_2_rain.jpg" height="150">
+  <img src="images/generated_images/stylized_photo_2_abstract.jpg" height="150">
+  <img src="images/generated_images/stylized_photo_2_mosaic.jpg" height="150">
+</p>
+
+<hr>
+
+# Video
+
+
+
+
+
 

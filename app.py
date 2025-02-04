@@ -30,6 +30,7 @@ if content_type == "Изображение":
 
         st.write("Выберите стиль:")
         col1, col2, col3, col4 = st.columns(4)
+
         style_images = {
             "starry_night": "images/style_images/starry-night.jpg",
             "rain_princess": "images/style_images/rain-princess.jpg",
@@ -53,31 +54,31 @@ if content_type == "Изображение":
             if st.button("Mosaic"):
                 select_style("mosaic")
 
-    # Показываем текущий выбор
-    if st.session_state.selected_style:
-        st.write(f"Выбран стиль: {st.session_state.selected_style}")
-        st.image(style_images[st.session_state.selected_style], use_container_width=True)
+        # Показываем текущий выбор
+        if st.session_state.selected_style:
+            st.write(f"Выбран стиль: {st.session_state.selected_style}")
+            st.image(style_images[st.session_state.selected_style], use_container_width=True)
 
-        model_path = PRETRAINED_MODELS[st.session_state.selected_style]
+            model_path = PRETRAINED_MODELS[st.session_state.selected_style]
 
-        if st.button("Применить стиль"):
-            stylized_image = stylize_image(image, image_size=512, model_path=model_path)
+            if st.button("Применить стиль"):
+                stylized_image = stylize_image(image, image_size=512, model_path=model_path)
 
-            # Сохраняем изображение в session_state
-            st.session_state["stylized_image"] = stylized_image
+                # Сохраняем изображение в session_state
+                st.session_state["stylized_image"] = stylized_image
 
-            # Сохранение результата
-            output_path = f"stylized_{uploaded_file.name}"
-            save_image(stylized_image, output_path)
-            st.session_state["output_path"] = output_path  # Сохраняем путь к файлу
+                # Сохранение результата
+                output_path = f"images/generated_images/stylized_{uploaded_file.name}"
+                save_image(stylized_image, output_path)
+                st.session_state["output_path"] = output_path  # Сохраняем путь к файлу
 
-    # ✅ Показываем изображение только из session_state (чтобы не дублировать)
-    if "stylized_image" in st.session_state:
-        st.image(st.session_state["output_path"], caption="Стилизованное изображение", use_container_width=True)
+        # ✅ Показываем изображение только из session_state (чтобы не дублировать)
+        if "stylized_image" in st.session_state:
+            st.image(st.session_state["output_path"], caption="Стилизованное изображение", use_container_width=True)
 
-        # Кнопка для скачивания результата
-        with open(st.session_state["output_path"], "rb") as file:
-            st.download_button(label="Скачать изображение", data=file, file_name=st.session_state["output_path"], mime="image/png")
+            # Кнопка для скачивания результата
+            with open(st.session_state["output_path"], "rb") as file:
+                st.download_button(label="Скачать изображение", data=file, file_name=st.session_state["output_path"], mime="image/png")
 
 # --- 🎥 **Стилизация видео** ---
 elif content_type == "Видео":

@@ -113,7 +113,7 @@ def stylize_video(video_path, model_path, save_path, frames_per_step, image_size
     # to add the audio back to the video, run this command in the terminal:
     # ffmpeg -i {save_path} -i {video_path} -c copy -map 0:v:0 -map 1:a:0 {save_with_audio_path}
 
-    # # Конвертируем в H.264
+    # Конвертируем в H.264
     fixed_video_path = save_path.replace(".mp4", "_fixed.mp4")
     ffmpeg_cmd = [
         "ffmpeg", "-y",  # Перезаписывать файл без запроса

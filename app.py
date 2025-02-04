@@ -7,7 +7,6 @@ from torchvision.utils import save_image
 from saved_models.pretrained_models import PRETRAINED_MODELS
 from stylize_image import stylize_image
 from stylize_video import stylize_video
-import io
 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"

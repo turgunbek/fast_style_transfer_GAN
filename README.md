@@ -5,17 +5,29 @@ The main part of code was taken from [here](https://github.com/igreat/fast-style
 
 The feature of this method is its fast time of inference.
 
+# Structure
+
+In the folder `gifs` there are gif-images from original video and styilized generated videos. In order to view in github directly.
+
+In the folder `images` there are content images, style images (4 styles are pretrained) and generated images.
+
 In the folder `models` there are two code files. The `loss_models.py` involves the VGG16 model from torchvision.models and the content, style and TV (total variation) losses. The `transformation_models.py` file contains the main deeplearning model for applying style transfer.
+
+In the folder `reports` there are the demo video of inference and some files for grading the project.
 
 In the folder `saved_models` there are the pretrained models (weights) and the mapping PRETRAINED_MODELS in the file `pretrained_models.py` corresponding for 4 styles.
 
-In the folder `images` there are content images, style images (4 styles are pretrained) and generated images.
+In the folder `tests` there are tests covering some functions from the code of the project.
 
 In the folder `videos` there are an example video `flag_kg_winter.mp4` with the stylized ones with names starting with "stylized_".
 
 The file `app.py` is the main streamlit file.
 
 The file `argument_parsers.py` contains the function training_parser() required in the running the `train_model.py` through the command line using argparser. In the original [work](https://github.com/igreat/fast-style-transfer/tree/main) the stylizations of image and video are to be done via command line. But in this work I deprecated these options because of the streamlit interface.
+
+The file `Dockerfile` contains docker instructions for building the docker image.
+
+The file `requirements.txt` contains the packages required to the streamlit cloud app.
 
 The file `stylize_image.py` contains the function for image stylization.
 
@@ -116,6 +128,20 @@ Videos are located in the folder `videos`. Here I show the gifs:
 
 <hr>
 
+# Docker usage
+
+There are 2 ways to use the docker of the project:
+
+1) One can run the ready docker image from my dockerhub: run the command `docker run -p 8501:8501 omurkanov/fast-style-transfer` and then open in browswer by address `http://localhost:8501`
+
+2) One can build the docker image locally. For this one should clone the repo:
+```git clone https://github.com/turgunbek/fast_style_transfer_GAN.git
+cd fast_style_transfer_GAN```
+Then build the image: `docker build -t fast-style-transfer .`
+Then run the container: `docker run -p 8501:8501 fast-style-transfer`
+Then open it in the browser: `http://localhost:8501`
+
+
 # Reports (Отчёт для разбалловки)
 
 * Есть работающий инференс (можно увидеть в reports\demo.mp4 или на сервере https://faststyletransfergan.streamlit.app/ или запустить самому: склонировать репозиторий, далее в терминале набрать `streamlit run app.py`).
@@ -126,5 +152,5 @@ Videos are located in the folder `videos`. Here I show the gifs:
 * Линтеры - прогнал через flake8 - всё ок (скриншот виден в reports\linters_and_tests.png).
 * Тесты - составил в папке tests тесты на некоторые функции, прогнал тесты - всё ок (скриншот виден в reports\linters_and_tests.png).
 * Дополнительная фича - возможность стилизовать видео. Сделал в интерфейсе streamlit возможность выбора видео. На демо в конце видно, что работает с видео. Результаты находятся в папке videos.
-* Докер-контейнер - todo
+* Докер-контейнер - собрал докер образ и выложил на докерхаб (https://hub.docker.com/r/omurkanov/fast-style-transfer), можно подтянуть командой `docker pull omurkanov/fast-style-transfer`. Также есть докерфайл `Dockerfile`, с помощью которого можно собрать докер-образ локально (см. инструкцию выше).
 

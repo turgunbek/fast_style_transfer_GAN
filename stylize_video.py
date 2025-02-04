@@ -12,7 +12,13 @@ from torchvision.transforms.functional import resize
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
-def stylize_video(video_path, model_path, save_path, frames_per_step, image_size, progress_bar=None, status_text=None):
+def stylize_video(video_path,
+                  model_path,
+                  save_path,
+                  frames_per_step,
+                  image_size,
+                  progress_bar=None,
+                  status_text=None):
     # load the video
     video = cv2.VideoCapture(video_path)
 
@@ -41,7 +47,10 @@ def stylize_video(video_path, model_path, save_path, frames_per_step, image_size
     print(f"output video fps: {fps}\n")
 
     # setting up the model
-    transformation_model = transformation_models.TransformationModel().to(device).eval()
+    transformation_model = (
+        transformation_models.TransformationModel()
+        .to(device).eval()
+    )
     # loading weights of pretrained model
     checkpoint = torch.load(model_path, map_location=device)
     transformation_model.load_state_dict(checkpoint["model_state_dict"])
@@ -58,8 +67,6 @@ def stylize_video(video_path, model_path, save_path, frames_per_step, image_size
         float(fps),
         (width, height),
     )
-
-    # total_batches = frame_count // frames_batch_size + (1 if frame_count % frames_batch_size != 0 else 0)
 
     start_time = time.time()  # Засекаем время
 
@@ -99,8 +106,18 @@ def stylize_video(video_path, model_path, save_path, frames_per_step, image_size
             progress = (i + batch_size) / frame_count
             progress_bar.progress(progress)
 
-            estimated_time_left = (elapsed_time / progress) * (1 - progress) if progress > 0 else 0
-            status_text.text(f"Прогресс: {int(progress * 100)}% ⏳ Осталось: {int(estimated_time_left)} сек.")
+            estimated_time_left = (
+                (elapsed_time / progress) * (1 - progress)
+                if progress > 0
+                else 0
+            )
+
+            status_text.text(
+                "Прогресс: "
+                f"{int(progress * 100)}% "
+                "⏳ Осталось: "
+                f"{int(estimated_time_left)} сек."
+            )
 
     print(f"✅ Стилизованное видео сохранено в {save_path}")
     out.release()
@@ -111,7 +128,8 @@ def stylize_video(video_path, model_path, save_path, frames_per_step, image_size
         progress_bar.progress(1.0)
 
     # to add the audio back to the video, run this command in the terminal:
-    # ffmpeg -i {save_path} -i {video_path} -c copy -map 0:v:0 -map 1:a:0 {save_with_audio_path}
+    # ffmpeg -i {save_path} -i {video_path} -c copy
+    # -map 0:v:0 -map 1:a:0 {save_with_audio_path}
 
     # Конвертируем в H.264
     fixed_video_path = save_path.replace(".mp4", "_fixed.mp4")
@@ -127,12 +145,13 @@ def stylize_video(video_path, model_path, save_path, frames_per_step, image_size
     subprocess.run(ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # Проверяем, создалось ли видео
-    if os.path.exists(fixed_video_path) and os.path.getsize(fixed_video_path) > 0:
+    if (os.path.exists(fixed_video_path) and
+            os.path.getsize(fixed_video_path) > 0):
         print(f"✅ Видео успешно конвертировано: {fixed_video_path}")
         return fixed_video_path  # ✅ Возвращаем путь к файлу!
     else:
         print("❌ Ошибка: Видео не сконвертировано!")
-        return save_path  # Если что-то пошло не так, используем оригинальный файл
+        return save_path
 
 
 def stylize_frames_batch(
@@ -150,7 +169,6 @@ def stylize_frames_batch(
     frames = preprocess_batch(frames, mean, std)
     if image_size:
         frames = resize(frames, image_size)
-    width, height = frames.shape[3], frames.shape[2]
     mean = mean.to(device)
     std = std.to(device)
 
@@ -159,20 +177,21 @@ def stylize_frames_batch(
     stylized_frames = torch.empty_like(frames)
     for i in range(0, frames_to_capture, frames_per_step):
         # get the batch
-        section = frames[i : i + frames_per_step].to(device)
+        section = frames[i:i + frames_per_step].to(device)
         # stylize the batch
         stylized_section = transformation_model(section)
 
         # depreprocess the batch
         stylized_section = deprocess_batch(stylized_section, mean, std)
 
-        # for some reason the transformed image ends up having slightly different dimensions
+        # for some reason the transformed image ends up
+        #  having slightly different dimensions
         # so we resize it to the right dimensions
         stylized_section = resize(
             stylized_section, (section.shape[2], section.shape[3])
         )
         # save the batch
-        stylized_frames[i : i + frames_per_step] = stylized_section
+        stylized_frames[i:i + frames_per_step] = stylized_section
 
         # print progress every 24 frames
         if i % 24 == 0:

@@ -15,7 +15,9 @@ def stylize_image(image, image_size, model_path):
         img = resize(img, size=image_size)
     img = preprocess_image(img, mean, std)
 
-    transformation_model = transformation_models.TransformationModel().to(device).eval()
+    transformation_model = (
+        transformation_models.TransformationModel().to(device).eval()
+    )
 
     # code to load pretrained model
     checkpoint = torch.load(model_path, map_location=device)

@@ -21,11 +21,13 @@ if "selected_style" not in st.session_state:
 
 # --- 🖼 **Стилизация изображения** ---
 if content_type == "Изображение":
-    uploaded_file = st.file_uploader("Загрузите изображение...", type=["jpg", "jpeg", "png"])
+    uploaded_file = st.file_uploader("Загрузите изображение...",
+                                     type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
-        st.image(image, caption="Исходное изображение", use_container_width=True)
+        st.image(image, caption="Исходное изображение",
+                 use_container_width=True)
 
         st.write("Выберите стиль:")
         col1, col2, col3, col4 = st.columns(4)
@@ -56,28 +58,37 @@ if content_type == "Изображение":
         # Показываем текущий выбор
         if st.session_state.selected_style:
             st.write(f"Выбран стиль: {st.session_state.selected_style}")
-            st.image(style_images[st.session_state.selected_style], use_container_width=True)
+            st.image(style_images[st.session_state.selected_style],
+                     use_container_width=True)
 
             model_path = PRETRAINED_MODELS[st.session_state.selected_style]
 
             if st.button("Применить стиль"):
-                stylized_image = stylize_image(image, image_size=512, model_path=model_path)
+                stylized_image = stylize_image(image, image_size=512,
+                                               model_path=model_path)
 
                 # Сохраняем изображение в session_state
                 st.session_state["stylized_image"] = stylized_image
 
                 # Сохранение результата
-                output_path = f"images/generated_images/stylized_{uploaded_file.name}"
+                output_path = f"images/generated_images/\
+                    stylized_{uploaded_file.name}"
                 save_image(stylized_image, output_path)
-                st.session_state["output_path"] = output_path  # Сохраняем путь к файлу
+                # Сохраняем путь к файлу
+                st.session_state["output_path"] = output_path
 
-        # ✅ Показываем изображение только из session_state (чтобы не дублировать)
+        # ✅ Показываем изображение только из session_state
         if "stylized_image" in st.session_state:
-            st.image(st.session_state["output_path"], caption="Стилизованное изображение", use_container_width=True)
+            st.image(st.session_state["output_path"],
+                     caption="Стилизованное изображение",
+                     use_container_width=True)
 
             # Кнопка для скачивания результата
             with open(st.session_state["output_path"], "rb") as file:
-                st.download_button(label="Скачать изображение", data=file, file_name=st.session_state["output_path"], mime="image/png")
+                st.download_button(label="Скачать изображение",
+                                   data=file,
+                                   file_name=st.session_state["output_path"],
+                                   mime="image/png")
 
 # --- 🎥 **Стилизация видео** ---
 elif content_type == "Видео":
@@ -93,7 +104,8 @@ elif content_type == "Видео":
         st.write(f"Видео загружено: {uploaded_video.name}")
 
         # Выбор стиля
-        selected_style = st.selectbox("Выберите стиль:", list(PRETRAINED_MODELS.keys()))
+        selected_style = st.selectbox("Выберите стиль:",
+                                      list(PRETRAINED_MODELS.keys()))
         model_path = PRETRAINED_MODELS[selected_style]
 
         if st.button("Применить стиль"):
@@ -104,7 +116,8 @@ elif content_type == "Видео":
             status_text = st.empty()
 
             # Запуск стилизации
-            with st.spinner("Стилизация видео... Это может занять несколько минут ⏳"):
+            msg = "Стилизация видео... Это может занять несколько минут ⏳"
+            with st.spinner(msg):
                 output_video_path = stylize_video(
                     video_path=input_video_path,
                     model_path=model_path,
@@ -116,7 +129,8 @@ elif content_type == "Видео":
                 )
 
             # ✅ Ждём, пока файл действительно появится
-            while not os.path.exists(output_video_path) or os.path.getsize(output_video_path) == 0:
+            while (not os.path.exists(output_video_path) or
+                   os.path.getsize(output_video_path) == 0):
                 time.sleep(1)
 
             st.success("✅ Стилизация завершена!")

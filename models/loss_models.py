@@ -30,12 +30,14 @@ class VGG16Loss(nn.Module):
     ):
 
         super(VGG16Loss, self).__init__()
-        features = vgg16(weights=VGG16_Weights.IMAGENET1K_V1).features.eval().to(device)
+        features = vgg16(
+            weights=VGG16_Weights.IMAGENET1K_V1
+            ).features.eval().to(device)
         features.requires_grad_(False)
 
         # load stuff to device
         self.MEAN = self.MEAN.to(device)
-        self.STD = self.STD.to(device)
+        self.STD = self.STD.to(device)b
         style_img = style_img.to(device)
 
         self.content_losses = []
@@ -79,7 +81,8 @@ class VGG16Loss(nn.Module):
                 self.content_losses.append(loss_module)
                 content_layers.remove(name)
 
-            # making sure it is cut off at the last loss layer to avoid unnecesarry computations
+            # making sure it is cut off at the last loss layer
+            # to avoid unnecesarry computations
             if len(style_layers) == 0 and len(content_layers) == 0:
                 break
 
@@ -101,4 +104,6 @@ class VGG16Loss(nn.Module):
         self.total_content_loss = sum([x.loss for x in self.content_losses])
         self.total_style_loss = sum([x.loss for x in self.style_losses])
 
-        return self.total_content_loss + self.total_style_loss + self.tv_loss.loss
+        r = self.total_content_loss + self.total_style_loss + self.tv_loss.loss
+
+        return r

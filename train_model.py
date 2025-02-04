@@ -26,7 +26,8 @@ class StyleModelTrainer:
                 transforms.Resize(self.training_config["img_size"]),
                 transforms.CenterCrop(self.training_config["img_size"]),
                 transforms.ToTensor(),
-                transforms.Normalize(self.loss_model.MEAN, self.loss_model.STD),
+                transforms.Normalize(self.loss_model.MEAN,
+                                     self.loss_model.STD),
             ]
         )
 
@@ -34,7 +35,9 @@ class StyleModelTrainer:
             root=self.training_config["path_to_dataset"], transform=transform
         )
         train_loader = DataLoader(
-            train_dataset, batch_size=self.training_config["batch_size"], shuffle=True,
+            train_dataset,
+            batch_size=self.training_config["batch_size"],
+            shuffle=True,
         )
 
         return train_loader
@@ -44,7 +47,8 @@ class StyleModelTrainer:
 
         current_checkpoint = 1
 
-        ## training ##
+        # training #
+
         # the size is rounded down to the nearest multiple of the batch size
         dataset_size = len(train_loader.dataset)
         dataset_size -= dataset_size % self.training_config["batch_size"]
@@ -80,29 +84,33 @@ class StyleModelTrainer:
 
                 # autosaving every 1000 training steps
                 if current_iteration % 1000 == 0:
+                    model_state = self.transformation_model.state_dict()
+                    optimizer_state = self.optimizer.state_dict()
                     torch.save(
                         {
                             "epoch": epoch,
-                            "model_state_dict": self.transformation_model.state_dict(),
-                            "optimizer_state_dict": self.optimizer.state_dict(),
+                            "model_state_dict": model_state,
+                            "optimizer_state_dict": optimizer_state,
                             "loss": loss,
                         },
                         "auto_save/auto_save.pth",
                     )
 
                 # accumulative checkpointing
-                if current_iteration % self.training_config["checkpoint_interval"] == 0:
+                chkpt_interval = self.training_config["checkpoint_interval"]
+                if current_iteration % chkpt_interval == 0:
+                    model_state = self.transformation_model.state_dict()
+                    optimizer_state = self.optimizer.state_dict()
                     torch.save(
                         {
                             "epoch": epoch,
-                            "model_state_dict": self.transformation_model.state_dict(),
-                            "optimizer_state_dict": self.optimizer.state_dict(),
+                            "model_state_dict": model_state,
+                            "optimizer_state_dict": optimizer_state,
                             "loss": loss,
                         },
                         f"auto_save/checkpoint{current_checkpoint}.pth",
                     )
                     current_checkpoint += 1
-
 
                 # adding losses to tensorboard
                 self.summary.add_scalar(
@@ -123,14 +131,15 @@ class StyleModelTrainer:
 
                 if current_iteration % 500 == 0:
                     # preparing and displaying the example image
-                    example_image = x[0] * self.loss_model.STD + self.loss_model.STD
+                    example_image = x[0] * self.loss_model.STD +\
+                          self.loss_model.STD
                     example_image = example_image.clamp(0, 1) * 255
                     example_image = (
                         example_image.detach().cpu().numpy().astype(np.uint8)
                     )
                     self.summary.add_image(
-                        "images/example_image", 
-                        example_image, 
+                        "images/example_image",
+                        example_image,
                         current_iteration + epoch * dataset_size + 1,
                     )
                     # preparing and displaying the styled image
@@ -173,14 +182,20 @@ if __name__ == "__main__":
     }
 
     # setting up the model and optimizer
-    transformation_model = transformation_models.TransformationModel().to(args.device)
-    optimizer = torch.optim.Adam(transformation_model.parameters(), lr=args.learning_rate)
+    transformation_model = (
+        transformation_models.TransformationModel().to(args.device)
+    )
+    optimizer = torch.optim.Adam(
+        transformation_model.parameters(),
+        lr=args.learning_rate
+        )
 
     # loading the model and optimizer
     if args.checkpoint_path:
         checkpoint = torch.load(args.checkpoint_path)
         # make sure the model has an optimizer state dict
-        assert "optimizer_state_dict" in checkpoint, "checkpoint doesn't have optimizer state dict"
+        assert_msg = "checkpoint doesn't have optimizer state dict"
+        assert "optimizer_state_dict" in checkpoint, assert_msg
         transformation_model.load_state_dict(checkpoint["model_state_dict"])
         optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
 
@@ -196,20 +211,25 @@ if __name__ == "__main__":
     mean, std = loss_models.VGG16Loss.MEAN, loss_models.VGG16Loss.STD
     style_img = (style_img - mean) / std
 
-    # for some reason using process_image() here makes the style loss very large (big bug)
+    # for some reason using process_image() here
+    # makes the style loss very large (big bug)
 
     loss_model = loss_models.VGG16Loss(
-        style_img=style_img, 
-        content_weight=args.content_weight, 
-        style_weight=args.style_weight, 
-        tv_weight=args.tv_weight, 
+        style_img=style_img,
+        content_weight=args.content_weight,
+        style_weight=args.style_weight,
+        tv_weight=args.tv_weight,
         batch_size=args.batch_size,
         device=args.device,
     )
 
     # training the model
     trainer = StyleModelTrainer(
-        transformation_model, loss_model, optimizer, training_config, args.device
+        transformation_model,
+        loss_model,
+        optimizer,
+        training_config,
+        args.device
     )
     trainer.train()
     print("Training complete!")

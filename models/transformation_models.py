@@ -90,7 +90,14 @@ class UpsampleConv(nn.Module):
     Upsampling followed by a convolutional layer
     """
 
-    def __init__(self, in_channels, out_channels, kernel_size, stride, scale_factor):
+    def __init__(
+            self,
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride,
+            scale_factor
+            ):
         super(UpsampleConv, self).__init__()
         self.scale_factor = scale_factor
         self.conv = ReflectConv(in_channels, out_channels, kernel_size, stride)

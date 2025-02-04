@@ -36,7 +36,10 @@ class ContentLoss(nn.Module):
         if self.mode == "capture":
             self.target_feature = gen_feature.detach()
         elif self.mode == "loss":
-            self.loss = self.weight * F.mse_loss(gen_feature, self.target_feature)
+            self.loss = self.weight * F.mse_loss(
+                gen_feature,
+                self.target_feature
+                )
         else:
             raise ValueError(f"Unknown mode: {self.mode}")
 
@@ -60,7 +63,8 @@ class TVLoss(nn.Module):
         self.x_diff = featmaps[:, :, 1:, :] - featmaps[:, :, :-1, :]
         self.y_diff = featmaps[:, :, :, 1:] - featmaps[:, :, :, :-1]
         self.loss = self.weight * (
-            torch.sum(torch.abs(self.x_diff)) + torch.sum(torch.abs(self.y_diff))
+            torch.sum(torch.abs(self.x_diff))
+            + torch.sum(torch.abs(self.y_diff))
         )
         return featmaps
 
@@ -126,7 +130,8 @@ def display_images_in_a_grid(
 
 def apply_style_grid(model, path_to_image, paths_to_models):
     """
-    Produces a grid of images in matplotlib for the outputs of multiple models on the same image.
+    Produces a grid of images in matplotlib for the outputs
+    of multiple models on the same image.
     I used this to compare multiple checkpoints of the same model.
     """
 
@@ -152,7 +157,9 @@ def apply_style_grid(model, path_to_image, paths_to_models):
         gen_image = model(img)
         gen_image = gen_image * std + mean
         gen_image = gen_image.clamp(0, 1)
-        gen_image = gen_image.squeeze(0).detach().cpu().numpy().transpose(1, 2, 0)
+        gen_image = (
+            gen_image.squeeze(0).detach().cpu().numpy().transpose(1, 2, 0)
+        )
         gen_images.append(gen_image)
 
     # display images in a grid
